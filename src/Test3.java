@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class Test3 {
 
-    public static class FileReaderCallable implements Callable<LinkedHashMap<String, Integer>> {
+    public static class FileReaderCallable implements Callable<HashMap<String, Integer>> {
         private String filename;
 
         public FileReaderCallable(String filename) {
@@ -21,8 +21,8 @@ public class Test3 {
         }
 
         @Override
-        public LinkedHashMap<String, Integer> call() {
-            LinkedHashMap<String, Integer> map = new LinkedHashMap<>();
+        public HashMap<String, Integer> call() {
+            HashMap<String, Integer> map = new HashMap<>();
             try {
                 File fileIn = new File(filename);
                 FileInputStream fileStream = new FileInputStream(fileIn);
@@ -59,8 +59,8 @@ public class Test3 {
 
         if(listOfFiles != null) {
             ExecutorService executor = Executors.newFixedThreadPool(6);
-            List<Future<LinkedHashMap<String, Integer>>> futureList = new ArrayList<>();
-            LinkedHashMap<String, Integer> countWord = new LinkedHashMap<>();
+            List<Future<HashMap<String, Integer>>> futureList = new ArrayList<>();
+            HashMap<String, Integer> countWord = new HashMap<>();
 
             for (int i = 0; i < listOfFiles.length; i++) {
                 futureList.add(executor.submit(new FileReaderCallable(listOfFiles[i].getAbsolutePath())));
@@ -72,7 +72,7 @@ public class Test3 {
 
             for (int i = 0; i < futureList.size(); i++) {
                 try {
-                    LinkedHashMap<String, Integer> map = futureList.get(i).get();
+                    HashMap<String, Integer> map = futureList.get(i).get();
                     for(String key : map.keySet()) {
                         if (countWord.containsKey(key)) {
                             countWord.put(key, countWord.get(key) + map.get(key));
